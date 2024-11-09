@@ -16,7 +16,7 @@ export const getBaseUrl = () => {
     return `https://${process.env.VERCEL_URL}`
   }
 
-  return 'https://<YOUR_DEPLOYED_WORKER_URL>/'
+  return `https://${process.env.VERCEL_URL}`
 }
 
 export const serverClient = createTRPCProxyClient<AppRouter>({

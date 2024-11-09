@@ -1,27 +1,21 @@
 import { publicProcedure, router } from '../trpc'
+import { eq } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { db } from '@/db'
-import { usersTable as users } from '@/db/schema'
+import { user } from '@/db/schema'
 
 export const userRouter = router({
-  getUsers: publicProcedure.query(async () => {
-    return await db.select().from(users)
-  }),
-  addUser: publicProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        age: z.number(),
-        email: z.string(),
-      })
-    )
-    .mutation(async ({ input }) => {
-      await db.insert(users).values({
-        name: input.name,
-        age: input.age,
-        email: input.email,
-      })
-      return true
+  getUserById: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      const userData = await db
+        .select()
+        .from(user)
+        .where(eq(user.id, input.id))
+        .limit(1)
+        .then((rows) => rows[0] || null)
+
+      return userData
     }),
 })
