@@ -1,27 +1,31 @@
-import { Hono } from "hono"
-import { cors } from "hono/cors"
-import { handle } from "hono/vercel"
-import { postRouter } from "./routers/post-router"
+import { z } from "zod";
 
-const app = new Hono().basePath("/api").use(cors())
+import { publicProcedure, router } from "./trpc";
 
-/**
- * This is the primary router for your server.
- *
- * All routers added in /server/routers should be manually added here.
- */
-const appRouter = app.route("/post", postRouter)
+import { usersTable as users } from "@/db/schema";
 
-// The handler Next.js uses to answer API requests
-export const httpHandler = handle(app)
+import { db } from "@/db";
 
-/**
- * (Optional)
- * Exporting our API here for easy deployment
- *
- * Run `npm run deploy` for one-click API deployment to Cloudflare's edge network
- */
-export default app
+export const appRouter = router({
+  getUsers: publicProcedure.query(async () => {
+    return await db.select().from(users);
+  }),
+  addUser: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        age: z.number(),
+        email: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      await db.insert(users).values({
+        name: opts.input.name,
+        age: opts.input.age,
+        email: opts.input.email,
+      });
+      return true;
+    }),
+});
 
-// export type definition of API
-export type AppType = typeof appRouter
+export type AppRouter = typeof appRouter;
