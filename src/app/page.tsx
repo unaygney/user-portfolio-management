@@ -1,15 +1,15 @@
-import { serverClient } from "../trpc/serverClient";
+import { serverClient } from '../trpc/serverClient'
 
-export const dynamic = "force-dynamic";
+import Users from '@/components/users'
+
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const users = await serverClient.getUsers.query();
-  console.log(users);
+  const users = await serverClient.user.getUsers.query()
 
   return (
-    <main className="max-w-3xl mx-auto mt-5">
-      {/* <TodoList initialTodos={todos} /> */}
-      <div className="text-black">test</div>
+    <main className="mx-auto mt-5 max-w-3xl">
+      <Users initialData={users} />
     </main>
-  );
+  )
 }
