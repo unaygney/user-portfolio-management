@@ -8,6 +8,13 @@
       "when": 1731160258321,
       "tag": "0000_supreme_azazel",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1731164353855,
+      "tag": "0001_equal_champions",
+      "breakpoints": true
     }
   ]
 }
