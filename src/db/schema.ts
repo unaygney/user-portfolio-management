@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
@@ -6,6 +7,8 @@ export const user = pgTable('user', {
   email: text('email').notNull().unique(),
   emailVerified: boolean('emailVerified').notNull(),
   image: text('image'),
+  bio: text('bio'),
+  jobTitle: text('jobTitle'),
   createdAt: timestamp('createdAt').notNull(),
   updatedAt: timestamp('updatedAt').notNull(),
 })
@@ -40,5 +43,30 @@ export const verification = pgTable('verification', {
   value: text('value').notNull(),
   expiresAt: timestamp('expiresAt').notNull(),
 })
+
+export const project = pgTable('project', {
+  id: text('id').primaryKey(),
+  userId: text('userId')
+    .notNull()
+    .references(() => user.id),
+  name: text('name').notNull(),
+  demoUrl: text('demoUrl').notNull(),
+  repositoryUrl: text('repositoryUrl').notNull(),
+  description: text('description').notNull(),
+  image: text('image').notNull(),
+  createdAt: timestamp('createdAt').notNull(),
+  updatedAt: timestamp('updatedAt').notNull(),
+})
+
+export const userRelations = relations(user, ({ many }) => ({
+  projects: many(project),
+}))
+
+export const projectRelations = relations(project, ({ one }) => ({
+  user: one(user, {
+    fields: [project.userId],
+    references: [user.id],
+  }),
+}))
 
 export const authSchema = { user, session, account, verification }
