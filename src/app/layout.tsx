@@ -21,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={process.env.NODE_ENV === 'development'}
         className={cn(
           inter.className,
-          process.env.NODE_ENV === 'development' ? 'debug-screens' : ''
+          process.env.NODE_ENV === 'development' ? 'debug-screens' : '',
+          'scroll-smooth antialiased'
         )}
       >
         <Provider>{children}</Provider>
