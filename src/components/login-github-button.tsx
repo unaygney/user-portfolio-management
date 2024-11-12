@@ -3,6 +3,7 @@
 import { createAuthClient } from 'better-auth/react'
 import { Loader } from 'lucide-react'
 import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 
 import { Github } from './icons'
 import { Button } from './ui/button'
@@ -12,17 +13,26 @@ export default function LoginGithubButton() {
   const [loading, setLoading] = useState(false)
 
   const handleLogin = async () => {
-    setLoading(true)
-    try {
-      await client.signIn.social({
+    await client.signIn.social(
+      {
         provider: 'github',
         callbackURL: '/',
-      })
-    } catch (error) {
-      console.error('Login failed:', error)
-    } finally {
-      setLoading(false)
-    }
+      },
+      {
+        onRequest: () => {
+          setLoading(true)
+        },
+        onSuccess: () => {
+          setLoading(false)
+          toast.success('Login successful, redirecting...')
+        },
+        onError: (ctx) => {
+          setLoading(false)
+          console.error('Login failed:', ctx.error.message)
+          toast.error('Login failed, please try again.')
+        },
+      }
+    )
   }
 
   return (

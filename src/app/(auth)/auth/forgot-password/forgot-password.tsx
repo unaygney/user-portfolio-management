@@ -5,7 +5,10 @@ import { Loader } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
+import { authClient } from '@/lib/auth-client'
+import { baseUrl } from '@/lib/utils'
 import { ForgotPasswordSchema, forgotPasswordSchema } from '@/lib/validations'
 
 import { Button } from '@/components/ui/button'
@@ -27,13 +30,15 @@ export function ForgotPasswordForm() {
   })
 
   async function onSubmit(values: ForgotPasswordSchema) {
-    const res = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(values)
-      }, 2000)
+    const { data, error } = await authClient.forgetPassword({
+      email: values.email,
+      redirectTo: `${baseUrl}/auth/choose-new-password`,
     })
-    console.log(await res)
-    return res
+    if (data?.status) {
+      toast.success('Password reset link has been sent to your email')
+    } else if (error) {
+      toast.error(error?.message || 'An error occurred')
+    }
   }
 
   return (

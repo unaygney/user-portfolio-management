@@ -3,8 +3,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
+import { authClient } from '@/lib/auth-client'
 import { LoginSchema, loginSchema } from '@/lib/validations'
 
 import { Button } from '@/components/ui/button'
@@ -20,6 +23,8 @@ import {
 import { Input } from '@/components/ui/input'
 
 export function LoginForm() {
+  const router = useRouter()
+
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -29,13 +34,21 @@ export function LoginForm() {
   })
 
   async function onSubmit(values: LoginSchema) {
-    const res = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(values)
-      }, 2000)
-    })
-    console.log(await res)
-    return res
+    await authClient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Logged in successfully, redirecting...')
+          router.push('/')
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message)
+        },
+      }
+    )
   }
 
   return (
@@ -62,7 +75,7 @@ export function LoginForm() {
                 <Input
                   placeholder="Enter a password"
                   {...field}
-                  type="passowrd"
+                  type="password"
                 />
               </FormControl>
               <FormDescription className="text-right">

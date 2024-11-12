@@ -3,9 +3,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
+import { authClient } from '@/lib/auth-client'
 import { CreateAccountSchema, createAccountSchema } from '@/lib/validations'
 
 import { CheckCircle } from '@/components/icons'
@@ -20,6 +23,7 @@ import {
 import { Input } from '@/components/ui/input'
 
 export function CreateAccountForm() {
+  const router = useRouter()
   const form = useForm<CreateAccountSchema>({
     resolver: zodResolver(createAccountSchema),
     defaultValues: {
@@ -47,13 +51,22 @@ export function CreateAccountForm() {
   }
 
   async function onSubmit(values: CreateAccountSchema) {
-    const res = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(values)
-      }, 2000)
-    })
-    console.log(await res)
-    return res
+    const { data, error } = await authClient.signUp.email(
+      {
+        email: values.email,
+        password: values.password,
+        name: '',
+      },
+      {
+        onSuccess: (ctx) => {
+          toast.success('Account created successfully. Redirecting...')
+          router.push('/')
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message)
+        },
+      }
+    )
   }
 
   return (
