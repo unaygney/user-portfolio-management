@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import { Toaster } from 'react-hot-toast'
 
 import { cn } from '@/lib/utils'
 
@@ -29,6 +30,7 @@ export default function RootLayout({
         )}
       >
         <Provider>{children}</Provider>
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   )
