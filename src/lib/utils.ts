@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge'
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-export const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : 'http://localhost:3000'
+export const baseUrl =
+  process.env.NODE_ENV === 'production'
+    ? 'https://user-portfolio-management-ten.vercel.app'
+    : 'http://localhost:3000'
