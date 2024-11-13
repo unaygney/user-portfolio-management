@@ -10,7 +10,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex flex-1 justify-center">{children}</main>
     </div>
   )
 }

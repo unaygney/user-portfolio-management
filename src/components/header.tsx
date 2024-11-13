@@ -41,7 +41,7 @@ export default async function Header() {
           <Avatar>
             <AvatarImage src={user?.image ? user.image : undefined} />
 
-            <AvatarFallback className="border-2 border-neutral-300">
+            <AvatarFallback className="border-2 border-neutral-300 text-white">
               <User />
             </AvatarFallback>
           </Avatar>
