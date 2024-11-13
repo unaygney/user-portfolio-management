@@ -47,7 +47,18 @@ export const chooseNewPasswordSchema = z
     path: ['confirmPassword'],
   })
 
+export const profileSettingsFormSchema = z.object({
+  imageUrl: z.string().optional(),
+  email: z.string().email(),
+  jobTitle: z.string().optional(),
+  name: z.string().optional(),
+  bio: z.string().optional(),
+})
+
 export type LoginSchema = z.infer<typeof loginSchema>
 export type CreateAccountSchema = z.infer<typeof createAccountSchema>
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
 export type ChooseNewPasswordSchema = z.infer<typeof chooseNewPasswordSchema>
+export type ProfileSettingsFormSchema = z.infer<
+  typeof profileSettingsFormSchema
+>
