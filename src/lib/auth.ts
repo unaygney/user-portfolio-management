@@ -47,8 +47,9 @@ export const isRequestedAuthPage = (pathname: string) => {
 }
 export const securedPages = (pathname: string) => {
   const securedPaths = ['/', '/profile-settings', '/projects-settings']
+
+  if (pathname.startsWith('/portfolio/')) {
+    return false
+  }
   return securedPaths.some((page) => pathname.startsWith(page))
-}
-export const publicPages = (pathname: string) => {
-  return !securedPages(pathname)
 }
