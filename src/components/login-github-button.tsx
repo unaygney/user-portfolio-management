@@ -16,7 +16,6 @@ export default function LoginGithubButton() {
     await client.signIn.social(
       {
         provider: 'github',
-        callbackURL: '/',
       },
       {
         onRequest: () => {
