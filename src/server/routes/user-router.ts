@@ -1,6 +1,7 @@
 import { protectedProcedure, publicProcedure, router } from '../trpc'
 import { TRPCError } from '@trpc/server'
 import { eq } from 'drizzle-orm'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 import { profileSettingsFormSchema } from '@/lib/validations'
@@ -48,7 +49,7 @@ export const userRouter = router({
       }
 
       await db.update(user).set(updateData).where(eq(user.id, userId))
-
+      revalidatePath('/', 'layout')
       return { success: true }
     }),
 })
