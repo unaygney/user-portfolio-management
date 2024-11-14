@@ -60,7 +60,7 @@ export default async function Header() {
                 <h3 className="text-sm/normal font-medium text-[#20293a]">
                   {user?.name ?? ''}
                 </h3>
-                <p className="text-xs/normal font-normal text-[#677489]">
+                <p className="line-clamp-1 truncate text-xs/normal font-normal text-[#677489]">
                   {user?.email ?? ''}
                 </p>
               </div>
