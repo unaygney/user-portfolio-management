@@ -54,6 +54,21 @@ export const profileSettingsFormSchema = z.object({
   name: z.string().optional(),
   bio: z.string().optional(),
 })
+export const projectSettingsFormSchema = z.object({
+  name: z.string().min(1, { message: 'Project name is required' }),
+  demoUrl: z
+    .string()
+    .url({ message: 'Demo URL must be a valid URL' })
+    .optional(),
+  repositoryUrl: z
+    .string()
+    .url({ message: 'Repository URL must be a valid URL' })
+    .min(1, { message: 'Repository URL is required' }),
+  description: z
+    .string()
+    .min(1, { message: 'Project description is required' }),
+  image: z.string().min(1, { message: 'Project image is required' }),
+})
 
 export type LoginSchema = z.infer<typeof loginSchema>
 export type CreateAccountSchema = z.infer<typeof createAccountSchema>
@@ -61,4 +76,7 @@ export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>
 export type ChooseNewPasswordSchema = z.infer<typeof chooseNewPasswordSchema>
 export type ProfileSettingsFormSchema = z.infer<
   typeof profileSettingsFormSchema
+>
+export type ProjectSettingsFormSchema = z.infer<
+  typeof projectSettingsFormSchema
 >

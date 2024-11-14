@@ -59,6 +59,8 @@ export const project = pgTable('project', {
   updatedAt: timestamp('updatedAt').notNull(),
 })
 
+export type Project = typeof project.$inferSelect
+
 export const userRelations = relations(user, ({ many }) => ({
   projects: many(project),
 }))
