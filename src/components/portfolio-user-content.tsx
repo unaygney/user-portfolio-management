@@ -42,7 +42,7 @@ export default function PortfolioUserContent({ user }: { user: User }) {
         <div className="flex flex-col gap-2">
           <h3 className="text-sm/normal font-medium text-[#677489]">Bio</h3>
           <p className="text-base/normal font-medium text-[#364153]">
-            {user?.bio}
+            {user?.bio ?? <span className="text-sm">No bio provided</span>}
           </p>
         </div>
       </div>
