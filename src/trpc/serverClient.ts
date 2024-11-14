@@ -12,11 +12,11 @@ export const getBaseUrl = () => {
     return 'http://localhost:3000/'
   }
 
-  if (process.env.VERCEL_URL) {
+  if (process.env.NODE_ENV === 'production') {
     return `https://${process.env.VERCEL_URL}`
   }
 
-  return `https://${process.env.VERCEL_URL}`
+  return 'https://user-portfolio-management.vercel.app'
 }
 
 export const serverClient = createTRPCProxyClient<AppRouter>({
