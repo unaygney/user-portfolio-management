@@ -7,6 +7,7 @@ import { DropzoneOptions } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
+import { resizeImageToBase64 } from '@/lib/utils'
 import {
   ProfileSettingsFormSchema,
   profileSettingsFormSchema,
@@ -31,8 +32,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 
-export default function ProfileSettingsForm() {
+import { User as IUser } from '@/db/schema'
+import { trpc } from '@/trpc/client'
+
+export default function ProfileSettingsForm({ user }: { user: IUser }) {
   const [files, setFiles] = useState<File[] | null>(null)
+
+  const updateUserMutation = trpc.user.updateUser.useMutation()
 
   const dropZoneConfig = {
     maxFiles: 1,
@@ -46,21 +52,37 @@ export default function ProfileSettingsForm() {
 
   const form = useForm<ProfileSettingsFormSchema>({
     resolver: zodResolver(profileSettingsFormSchema),
+    defaultValues: {
+      email: user.email,
+      bio: user.bio || '',
+      jobTitle: user.jobTitle || '',
+      name: user.name || '',
+    },
   })
 
-  function handleFileChange(file: File) {
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const base64String = reader.result as string
+  async function handleFileChange(file: File) {
+    try {
+      const base64String = await resizeImageToBase64(file)
       form.setValue('imageUrl', base64String)
+    } catch (error) {
+      toast.error('Failed to process the image.')
     }
-    reader.readAsDataURL(file)
   }
 
   async function onSubmit(values: ProfileSettingsFormSchema) {
-    console.log(values)
-    toast.success('Profile updated successfully!')
-    //* API call to update profile
+    try {
+      await updateUserMutation.mutateAsync(values)
+      toast.success('Profile updated successfully!')
+      form.reset({
+        bio: '',
+        imageUrl: undefined,
+        jobTitle: '',
+        name: '',
+      })
+    } catch (error) {
+      console.error('Error updating profile:', error)
+      toast.error('Failed to update profile. Please try again.')
+    }
   }
 
   return (
@@ -137,6 +159,7 @@ export default function ProfileSettingsForm() {
                 <FormControl>
                   <Input
                     placeholder="example@mail.com"
+                    disabled
                     type="email"
                     {...field}
                   />
