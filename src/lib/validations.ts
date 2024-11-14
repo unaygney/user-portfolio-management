@@ -49,7 +49,7 @@ export const chooseNewPasswordSchema = z
 
 export const profileSettingsFormSchema = z.object({
   imageUrl: z.string().optional(),
-  email: z.string().email(),
+  email: z.string().email().optional(),
   jobTitle: z.string().optional(),
   name: z.string().optional(),
   bio: z.string().optional(),
