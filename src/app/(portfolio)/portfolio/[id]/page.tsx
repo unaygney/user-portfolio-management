@@ -37,7 +37,7 @@ export default async function PortfolioPage({
   }))
 
   return (
-    <div className="flex flex-col pb-20">
+    <div className="flex flex-col px-4 pb-20 md:px-0">
       <PortfolioHeader />
       <PortfolioUserContent user={userWithDate} />
       <PortfolioUserProjects projects={projects} />
