@@ -1,11 +1,17 @@
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { Metadata } from 'next/types'
 import React from 'react'
 
 import { auth } from '@/lib/auth'
 
 import ProfileSettingsForm from './profile-settings-form'
 import { serverClient } from '@/trpc/serverClient'
+
+export const metadata: Metadata = {
+  title: 'User Portfolio Management | Profile Settings',
+  description: 'User Portfolio Management with Next.js and tRPC',
+}
 
 export default async function ProfileSettings() {
   const session = await auth.api.getSession({

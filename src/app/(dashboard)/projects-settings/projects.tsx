@@ -1,11 +1,11 @@
-import { Pen, Pencil } from 'lucide-react'
 import { headers } from 'next/headers'
 import Image from 'next/image'
 import React from 'react'
 
 import { auth } from '@/lib/auth'
 
-import { Button } from '@/components/ui/button'
+import DeleteProjectModal from '@/components/delete-project'
+import UpdateProjectModal from '@/components/update-project'
 
 import { Project as IProject } from '@/db/schema'
 import { serverClient } from '@/trpc/serverClient'
@@ -56,14 +56,8 @@ function Project({ project }: { project: IProject }) {
           {project.description}
         </p>
         <div className="mt-auto flex gap-3">
-          <Button
-            size="sm"
-            variant="outline"
-            className="rounded-[8px] border-none bg-[#F2F5F9] text-[#20293A]"
-          >
-            <Pencil className="h-3 w-3" />
-            Edit
-          </Button>
+          <UpdateProjectModal project={project} />
+          <DeleteProjectModal project={project} />
         </div>
       </div>
     </div>

@@ -1,7 +1,13 @@
+import { Metadata } from 'next/types'
 import React from 'react'
 
 import Projects from './projects'
 import ProjectSettingsContainer from './projects-setting-container'
+
+export const metadata: Metadata = {
+  title: 'User Portfolio Management | Profile Settings',
+  description: 'User Portfolio Management with Next.js and tRPC',
+}
 
 export default function ProjectsSettings() {
   return (

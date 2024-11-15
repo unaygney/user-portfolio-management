@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { Metadata } from 'next/types'
 import React from 'react'
 
 import { getUserWithProjects } from '@/lib/queries'
@@ -7,7 +8,10 @@ import PortfolioHeader from '@/components/portfolio-header'
 import PortfolioUserContent from '@/components/portfolio-user-content'
 import PortfolioUserProjects from '@/components/portfolio-user-projects'
 
-import { serverClient } from '@/trpc/serverClient'
+export const metadata: Metadata = {
+  title: 'User Portfolio Management | Portfolio',
+  description: 'User Portfolio Management with Next.js and tRPC',
+}
 
 export default async function PortfolioPage({
   params,
