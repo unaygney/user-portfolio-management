@@ -109,4 +109,41 @@ export const projectRouter = router({
         throw new Error('Failed to fetch user projects')
       }
     }),
+  deleteProject: protectedProcedure
+    .input(
+      z.object({
+        projectId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { projectId } = input
+      const userId = ctx.user.id
+
+      try {
+        const existingProject = await db
+          .select()
+          .from(project)
+          .where(and(eq(project.id, projectId), eq(project.userId, userId)))
+          .limit(1)
+          .then((rows) => rows[0])
+
+        if (!existingProject) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message:
+              'Project not found or you do not have permission to delete it',
+          })
+        }
+
+        await db.delete(project).where(eq(project.id, projectId))
+
+        return { success: true, message: 'Project deleted successfully' }
+      } catch (error) {
+        console.error('Error deleting project:', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to delete project',
+        })
+      }
+    }),
 })
