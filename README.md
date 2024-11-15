@@ -1,5 +1,15 @@
 # Project Management Platform
 
+---
+
+## Screenshots
+
+### Dashboard
+
+![Dashboard](./public/Thumbnail.jpg)
+
+---
+
 A modern platform for efficiently managing projects, with features to add,
 update, and delete projects. Built using **Next.js** with the **App Router**, it
 provides a user-friendly interface and secure functionality.
@@ -75,14 +85,6 @@ API_KEY=
   - `lucide-react` for icons.
   - `react-dropzone` for file uploads.
 - **Deployment**: Supports deployment to platforms like Vercel.
-
----
-
-## Screenshots
-
-### Dashboard
-
-![Dashboard](./public/Thumbnail.jpg)
 
 ---
 
