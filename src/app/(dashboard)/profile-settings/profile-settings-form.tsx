@@ -73,12 +73,9 @@ export default function ProfileSettingsForm({ user }: { user: IUser }) {
     try {
       await updateUserMutation.mutateAsync(values)
       toast.success('Profile updated successfully!')
-      form.reset({
-        bio: '',
-        imageUrl: undefined,
-        jobTitle: '',
-        name: '',
-      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 400)
     } catch (error) {
       console.error('Error updating profile:', error)
       toast.error('Failed to update profile. Please try again.')
