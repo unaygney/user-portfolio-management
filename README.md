@@ -2,7 +2,7 @@
 
 ---
 
-## Screenshots
+## Screenshot
 
 ### Dashboard
 
